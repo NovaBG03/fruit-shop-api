@@ -95,4 +95,29 @@ class CustomerServiceImplTest {
         assertEquals(firstName, newCustomerDTO.getFirstname());
         assertEquals(lastName, newCustomerDTO.getLastname());
     }
+
+    @Test
+    void saveCustomerDTOTest() {
+        final Long id = 1L;
+        final String firstName = "David";
+        final String lastName = "Winter";
+
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setFirstname(firstName);
+        customerDTO.setLastname(lastName);
+
+        Customer savedCustomer = new Customer();
+        savedCustomer.setId(id);
+        savedCustomer.setFirstName(firstName);
+        savedCustomer.setLastName(lastName);
+
+        when(customerRepository.save(any(Customer.class))).thenReturn(savedCustomer);
+
+        CustomerDTO newCustomerDTO = customerService.saveCustomerDTO(id, customerDTO);
+
+        assertNotNull(newCustomerDTO);
+        assertNotNull(newCustomerDTO.getCustomer_url());
+        assertEquals(firstName, newCustomerDTO.getFirstname());
+        assertEquals(lastName, newCustomerDTO.getLastname());
+    }
 }

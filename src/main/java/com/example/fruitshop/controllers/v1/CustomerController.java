@@ -32,4 +32,9 @@ public class CustomerController {
     public ResponseEntity<CustomerDTO> createNewCustomer(@RequestBody CustomerDTO customerDTO) {
         return new ResponseEntity<>(customerService.createNewCustomer(customerDTO), HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CustomerDTO> saveCustomer(@RequestBody CustomerDTO customerDTO, @PathVariable Long id) {
+        return new ResponseEntity<>(customerService.saveCustomerDTO(id, customerDTO), HttpStatus.OK);
+    }
 }

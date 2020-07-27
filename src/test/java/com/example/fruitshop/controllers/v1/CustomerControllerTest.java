@@ -20,6 +20,7 @@ import static com.example.fruitshop.controllers.v1.AbstractRestControllerTest.as
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -104,6 +105,33 @@ class CustomerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(customerDTO)))
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.firstname", equalTo(firstName)))
+                .andExpect(jsonPath("$.lastname", equalTo(lastName)))
+                .andExpect(jsonPath("$.customer_url", equalTo(customerUrl)));
+    }
+
+    @Test
+    void saveCustomerTest() throws Exception {
+        final String firstName = "David";
+        final String lastName = "Winter";
+        final Long id = 1L;
+        final String customerUrl = "/customers/" + id;
+
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setFirstname(firstName);
+        customerDTO.setLastname(lastName);
+
+        CustomerDTO savedCustomerDTO = new CustomerDTO();
+        savedCustomerDTO.setCustomer_url(customerUrl);
+        savedCustomerDTO.setFirstname(firstName);
+        savedCustomerDTO.setLastname(lastName);
+
+        when(customerService.saveCustomerDTO(anyLong() ,any(CustomerDTO.class))).thenReturn(savedCustomerDTO);
+
+        mvc.perform(put("/api/v1/customers/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(customerDTO)))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstname", equalTo(firstName)))
                 .andExpect(jsonPath("$.lastname", equalTo(lastName)))
                 .andExpect(jsonPath("$.customer_url", equalTo(customerUrl)));
