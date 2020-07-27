@@ -15,4 +15,10 @@ public interface CustomerMapper {
     @Mapping(source = "lastName", target = "lastname")
     @Mapping(expression = "java( \"/customers/\" + customer.getId() )", target = "customer_url")
     CustomerDTO customerToCustomerDTO(Customer customer);
+
+    @Mapping(source = "firstname", target = "firstName")
+    @Mapping(source = "lastname", target = "lastName")
+    @Mapping(target = "id",
+            expression = "java( customerDTO.getCustomer_url() != null ? Long.valueOf(customerDTO.getCustomer_url().split(\"/\")[2]) : null )")
+    Customer CustomerDTOToCustomer(CustomerDTO customerDTO);
 }
