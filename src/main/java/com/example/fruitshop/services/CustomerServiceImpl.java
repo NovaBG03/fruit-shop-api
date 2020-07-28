@@ -3,6 +3,7 @@ package com.example.fruitshop.services;
 import com.example.fruitshop.api.v1.mappers.CustomerMapper;
 import com.example.fruitshop.api.v1.model.CustomerDTO;
 import com.example.fruitshop.domain.Customer;
+import com.example.fruitshop.exceptions.ResourceNotFoundException;
 import com.example.fruitshop.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDTO getCustomer(Long id) {
         return customerRepository.findById(id)
                 .map(customerMapper::customerToCustomerDTO)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override

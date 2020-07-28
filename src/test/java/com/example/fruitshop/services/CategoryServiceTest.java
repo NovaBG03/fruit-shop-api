@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -59,7 +60,7 @@ class CategoryServiceTest {
         category.setId(id);
         category.setName(name);
 
-        when(categoryRepository.findByName(name)).thenReturn(category);
+        when(categoryRepository.findByName(name)).thenReturn(Optional.of(category));
 
         CategoryDTO categoryDTO = categoryService.getCategoryByName(name);
 

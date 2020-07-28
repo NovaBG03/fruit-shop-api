@@ -2,6 +2,7 @@ package com.example.fruitshop.services;
 
 import com.example.fruitshop.api.v1.mappers.CategoryMapper;
 import com.example.fruitshop.api.v1.model.CategoryDTO;
+import com.example.fruitshop.exceptions.ResourceNotFoundException;
 import com.example.fruitshop.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO getCategoryByName(String name) {
-        return categoryMapper.categoryToCategoryDTO(categoryRepository.findByName(name));
+        return categoryRepository.findByName(name)
+                .map(categoryMapper::categoryToCategoryDTO)
+                .orElseThrow(ResourceNotFoundException::new);
     }
 }
