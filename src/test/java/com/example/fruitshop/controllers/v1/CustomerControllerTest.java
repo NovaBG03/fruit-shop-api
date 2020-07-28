@@ -6,6 +6,7 @@ import com.example.fruitshop.services.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -21,7 +22,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -162,5 +163,16 @@ class CustomerControllerTest {
                 .andExpect(jsonPath("$.firstname", equalTo(firstName)))
                 .andExpect(jsonPath("$.lastname", equalTo(lastName)))
                 .andExpect(jsonPath("$.customer_url", equalTo(customerUrl)));
+    }
+
+    @Test
+    void deleteCustomerTest() throws Exception {
+        final Long id = 1L;
+
+        mvc.perform(delete("/api/v1/customers/" + id)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(customerService, times(1)).deleteCustomerById(id);
     }
 }

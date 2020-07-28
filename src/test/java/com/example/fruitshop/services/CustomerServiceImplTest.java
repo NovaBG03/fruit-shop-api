@@ -7,6 +7,7 @@ import com.example.fruitshop.repositories.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceImplTest {
@@ -119,5 +120,17 @@ class CustomerServiceImplTest {
         assertNotNull(newCustomerDTO.getCustomer_url());
         assertEquals(firstName, newCustomerDTO.getFirstname());
         assertEquals(lastName, newCustomerDTO.getLastname());
+    }
+
+    @Test
+    void deleteByIdTest() {
+        final Long id = 1L;
+
+        customerService.deleteCustomerById(id);
+
+        ArgumentCaptor<Long> idCapture = ArgumentCaptor.forClass(Long.class);
+        verify(customerRepository, times(1)).deleteById(idCapture.capture());
+
+        assertEquals(id, idCapture.getValue());
     }
 }
