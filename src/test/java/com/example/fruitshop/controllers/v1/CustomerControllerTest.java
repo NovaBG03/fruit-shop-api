@@ -1,7 +1,9 @@
 package com.example.fruitshop.controllers.v1;
 
 import com.example.fruitshop.api.v1.model.CustomerDTO;
+import com.example.fruitshop.controllers.RestResponseEntityExceptionHandler;
 import com.example.fruitshop.domain.Customer;
+import com.example.fruitshop.exceptions.ResourceNotFoundException;
 import com.example.fruitshop.services.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +43,10 @@ class CustomerControllerTest {
 
     @BeforeEach
     void setUp() {
-        mvc = MockMvcBuilders.standaloneSetup(customerController).build();
+        mvc = MockMvcBuilders
+                .standaloneSetup(customerController)
+                .setControllerAdvice(new RestResponseEntityExceptionHandler())
+                .build();
     }
 
     @Test
@@ -176,6 +181,17 @@ class CustomerControllerTest {
                 .andExpect(status().isOk());
 
         verify(customerService, times(1)).deleteCustomerById(id);
+    }
+
+    @Test
+    void getCustomerByIdNotFoundTest() throws Exception {
+        final Long id = 1L;
+
+        when(customerService.getCustomer(id)).thenThrow(ResourceNotFoundException.class);
+
+        mvc.perform(get(getCustomerUrl(id))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     private String getCustomerUrl(Long id) {

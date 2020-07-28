@@ -1,7 +1,10 @@
 package com.example.fruitshop.controllers.v1;
 
 import com.example.fruitshop.api.v1.model.CategoryDTO;
+import com.example.fruitshop.controllers.RestResponseEntityExceptionHandler;
+import com.example.fruitshop.exceptions.ResourceNotFoundException;
 import com.example.fruitshop.services.CategoryService;
+import javassist.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +23,7 @@ import static com.example.fruitshop.controllers.v1.CategoryController.BASE_URL;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -38,7 +42,10 @@ class CategoryControllerTest {
 
     @BeforeEach
     void setUp() {
-        mvc = MockMvcBuilders.standaloneSetup(categoryController).build();
+        mvc = MockMvcBuilders
+                .standaloneSetup(categoryController)
+                .setControllerAdvice(new RestResponseEntityExceptionHandler())
+                .build();
     }
 
     @Test
@@ -72,5 +79,15 @@ class CategoryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(id)))
                 .andExpect(jsonPath("$.name", equalTo(name)));
+    }
+
+    @Test
+    void getCategoryByNameNotFoundTest() throws Exception {
+
+        when(categoryService.getCategoryByName(anyString())).thenThrow(ResourceNotFoundException.class);
+
+        mvc.perform(get(BASE_URL + "/name")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
