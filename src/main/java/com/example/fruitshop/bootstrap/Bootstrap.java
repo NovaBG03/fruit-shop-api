@@ -2,8 +2,10 @@ package com.example.fruitshop.bootstrap;
 
 import com.example.fruitshop.domain.Category;
 import com.example.fruitshop.domain.Customer;
+import com.example.fruitshop.domain.Vendor;
 import com.example.fruitshop.repositories.CategoryRepository;
 import com.example.fruitshop.repositories.CustomerRepository;
+import com.example.fruitshop.repositories.VendorRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -14,10 +16,13 @@ public class Bootstrap implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
     private final CustomerRepository customerRepository;
+    private final VendorRepository vendorRepository;
 
-    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository) {
+    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository,
+                     VendorRepository vendorRepository) {
         this.categoryRepository = categoryRepository;
         this.customerRepository = customerRepository;
+        this.vendorRepository = vendorRepository;
     }
 
     @Override
@@ -25,6 +30,7 @@ public class Bootstrap implements CommandLineRunner {
 
         loadCategories();
         loadCustomers();
+        loadVendors();
     }
 
     private void loadCategories() {
@@ -79,5 +85,33 @@ public class Bootstrap implements CommandLineRunner {
         customerRepository.save(joe);
 
         log.info("Loaded Customers: " + customerRepository.count());
+    }
+
+    private void loadVendors() {
+        Vendor wtfLtd = new Vendor();
+        wtfLtd.setName("Western Tasty Fruits Ltd.");
+        vendorRepository.save(wtfLtd);
+
+        Vendor efc = new Vendor();
+        efc.setName("Exotic Fruits Company");
+        vendorRepository.save(efc);
+
+        Vendor homeFruits = new Vendor();
+        homeFruits.setName("Home Fruits");
+        vendorRepository.save(homeFruits);
+
+        Vendor fffLtd = new Vendor();
+        fffLtd.setName("Fun Fresh Fruits Ltd.");
+        vendorRepository.save(fffLtd);
+
+        Vendor nfnCompany = new Vendor();
+        nfnCompany.setName("Nuts for Nuts Company");
+        vendorRepository.save(nfnCompany);
+
+        Vendor ian = new Vendor();
+        ian.setName("ian");
+        vendorRepository.save(ian);
+
+        log.info("Loaded Vendors: " + vendorRepository.count());
     }
 }

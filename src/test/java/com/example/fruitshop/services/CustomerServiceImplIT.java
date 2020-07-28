@@ -6,7 +6,7 @@ import com.example.fruitshop.bootstrap.Bootstrap;
 import com.example.fruitshop.domain.Customer;
 import com.example.fruitshop.repositories.CategoryRepository;
 import com.example.fruitshop.repositories.CustomerRepository;
-import lombok.SneakyThrows;
+import com.example.fruitshop.repositories.VendorRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,11 +26,14 @@ public class CustomerServiceImplIT {
     @Autowired
     CustomerRepository customerRepository;
 
+    @Autowired
+    VendorRepository vendorRepository;
+
     CustomerService customerService;
 
     @BeforeEach
     void setUp() throws Exception {
-        Bootstrap bootstrap = new Bootstrap(categoryRepository, customerRepository);
+        Bootstrap bootstrap = new Bootstrap(categoryRepository, customerRepository, vendorRepository);
         bootstrap.run();
 
         customerService = new CustomerServiceImpl(customerRepository, CustomerMapper.INSTANCE);
