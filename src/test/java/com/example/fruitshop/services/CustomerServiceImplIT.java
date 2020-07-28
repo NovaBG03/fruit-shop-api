@@ -41,7 +41,7 @@ public class CustomerServiceImplIT {
         CustomerDTO customerDTO = customerService.getAllCustomers().get(0);
         assertNotNull(customerDTO);
 
-        Long id = Long.valueOf(customerDTO.getCustomer_url().split("/")[2]);
+        Long id = Long.valueOf(customerDTO.getCustomer_url().split("/")[4]);
         String initialFirstName = customerDTO.getFirstname();
         String initialLastName = customerDTO.getLastname();
 
@@ -62,7 +62,7 @@ public class CustomerServiceImplIT {
         CustomerDTO customerDTO = customerService.getAllCustomers().get(0);
         assertNotNull(customerDTO);
 
-        Long id = Long.valueOf(customerDTO.getCustomer_url().split("/")[2]);
+        Long id = Long.valueOf(customerDTO.getCustomer_url().split("/")[4]);
         String initialFirstName = customerDTO.getFirstname();
         String initialLastName = customerDTO.getLastname();
 

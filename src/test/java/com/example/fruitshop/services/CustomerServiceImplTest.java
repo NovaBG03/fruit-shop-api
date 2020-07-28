@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.fruitshop.controllers.v1.CustomerController.BASE_URL;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -69,7 +70,7 @@ class CustomerServiceImplTest {
         assertNotNull(customerDTO);
         assertEquals(firstName, customerDTO.getFirstname());
         assertEquals(lastName, customerDTO.getLastname());
-        assertEquals("/customers/" + id, customerDTO.getCustomer_url());
+        assertEquals(BASE_URL + "/" + id, customerDTO.getCustomer_url());
     }
 
     @Test

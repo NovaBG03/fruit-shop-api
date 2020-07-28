@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.example.fruitshop.controllers.v1.AbstractRestControllerTest.asJsonString;
+import static com.example.fruitshop.controllers.v1.CustomerController.BASE_URL;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -57,7 +58,7 @@ class CustomerControllerTest {
 
         when(customerService.getAllCustomers()).thenReturn(customers);
 
-        mvc.perform(get("/api/v1/customers")
+        mvc.perform(get(BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.customers", hasSize(2)));
@@ -66,9 +67,9 @@ class CustomerControllerTest {
     @Test
     void getCustomerByIdTest() throws Exception {
         final Long id = 1L;
-        final String customerUrl = "/customers/" + id;
         final String firstName = "David";
         final String lastName = "Winter";
+        final String customerUrl = getCustomerUrl(id);
 
         CustomerDTO customer = new CustomerDTO();
         customer.setCustomer_url(customerUrl);
@@ -77,7 +78,7 @@ class CustomerControllerTest {
 
         when(customerService.getCustomer(id)).thenReturn(customer);
 
-        mvc.perform(get("/api/v1/customers" + "/" + id)
+        mvc.perform(get(customerUrl)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstname", equalTo(firstName)))
@@ -87,9 +88,10 @@ class CustomerControllerTest {
 
     @Test
     void createNewCustomerTest() throws Exception {
+        final Long id = 1L;
         final String firstName = "David";
         final String lastName = "Winter";
-        final String customerUrl = "/customers/1";
+        final String customerUrl = getCustomerUrl(id);
 
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setFirstname(firstName);
@@ -102,7 +104,7 @@ class CustomerControllerTest {
 
         when(customerService.createNewCustomer(any(CustomerDTO.class))).thenReturn(savedCustomerDTO);
 
-        mvc.perform(post("/api/v1/customers")
+        mvc.perform(post(BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(customerDTO)))
                 .andExpect(status().isCreated())
@@ -116,7 +118,7 @@ class CustomerControllerTest {
         final String firstName = "David";
         final String lastName = "Winter";
         final Long id = 1L;
-        final String customerUrl = "/customers/" + id;
+        final String customerUrl = getCustomerUrl(id);
 
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setFirstname(firstName);
@@ -129,7 +131,7 @@ class CustomerControllerTest {
 
         when(customerService.saveCustomerDTO(anyLong() ,any(CustomerDTO.class))).thenReturn(savedCustomerDTO);
 
-        mvc.perform(put("/api/v1/customers/" + id)
+        mvc.perform(put(customerUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(customerDTO)))
                 .andExpect(status().isOk())
@@ -143,7 +145,7 @@ class CustomerControllerTest {
         final String firstName = "David";
         final String lastName = "Winter";
         final Long id = 1L;
-        final String customerUrl = "/customers/" + id;
+        final String customerUrl = getCustomerUrl(id);
 
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setFirstname(firstName);
@@ -156,7 +158,7 @@ class CustomerControllerTest {
 
         when(customerService.patchCustomerDTO(anyLong() ,any(CustomerDTO.class))).thenReturn(savedCustomerDTO);
 
-        mvc.perform(patch("/api/v1/customers/" + id)
+        mvc.perform(patch(customerUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(customerDTO)))
                 .andExpect(status().isOk())
@@ -169,10 +171,14 @@ class CustomerControllerTest {
     void deleteCustomerTest() throws Exception {
         final Long id = 1L;
 
-        mvc.perform(delete("/api/v1/customers/" + id)
+        mvc.perform(delete(getCustomerUrl(id))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         verify(customerService, times(1)).deleteCustomerById(id);
+    }
+
+    private String getCustomerUrl(Long id) {
+        return BASE_URL + "/" + id;
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.example.fruitshop.controllers.v1.CategoryController.BASE_URL;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,7 +50,7 @@ class CategoryControllerTest {
 
         when(categoryService.getAllCategories()).thenReturn(categories);
 
-        mvc.perform(get("/api/v1/categories")
+        mvc.perform(get(BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.categories", hasSize(categories.size())));
@@ -66,7 +67,7 @@ class CategoryControllerTest {
 
         when(categoryService.getCategoryByName(name)).thenReturn(categoryDTO);
 
-        mvc.perform(get("/api/v1/categories/" + name)
+        mvc.perform(get(BASE_URL + "/" + name)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(id)))

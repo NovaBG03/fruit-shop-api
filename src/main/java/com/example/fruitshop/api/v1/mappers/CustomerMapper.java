@@ -13,7 +13,8 @@ public interface CustomerMapper {
 
     @Mapping(source = "firstName", target = "firstname")
     @Mapping(source = "lastName", target = "lastname")
-    @Mapping(expression = "java( \"/customers/\" + customer.getId() )", target = "customer_url")
+    @Mapping(expression = "java( com.example.fruitshop.controllers.v1.CustomerController.BASE_URL + \"/\" + customer.getId() )",
+            target = "customer_url")
     CustomerDTO customerToCustomerDTO(Customer customer);
 
     @Mapping(source = "firstname", target = "firstName")
