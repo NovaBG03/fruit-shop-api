@@ -64,7 +64,8 @@ class CustomerControllerTest {
         when(customerService.getAllCustomers()).thenReturn(customers);
 
         mvc.perform(get(BASE_URL)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.customers", hasSize(2)));
     }
@@ -84,7 +85,8 @@ class CustomerControllerTest {
         when(customerService.getCustomer(id)).thenReturn(customer);
 
         mvc.perform(get(customerUrl)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstname", equalTo(firstName)))
                 .andExpect(jsonPath("$.lastname", equalTo(lastName)))
@@ -111,7 +113,8 @@ class CustomerControllerTest {
 
         mvc.perform(post(BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(customerDTO)))
+                .content(asJsonString(customerDTO))
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.firstname", equalTo(firstName)))
                 .andExpect(jsonPath("$.lastname", equalTo(lastName)))
@@ -138,7 +141,8 @@ class CustomerControllerTest {
 
         mvc.perform(put(customerUrl)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(customerDTO)))
+                .content(asJsonString(customerDTO))
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstname", equalTo(firstName)))
                 .andExpect(jsonPath("$.lastname", equalTo(lastName)))
@@ -165,7 +169,8 @@ class CustomerControllerTest {
 
         mvc.perform(patch(customerUrl)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(customerDTO)))
+                .content(asJsonString(customerDTO))
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstname", equalTo(firstName)))
                 .andExpect(jsonPath("$.lastname", equalTo(lastName)))

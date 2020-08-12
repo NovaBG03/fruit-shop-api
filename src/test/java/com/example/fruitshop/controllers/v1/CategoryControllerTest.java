@@ -58,7 +58,8 @@ class CategoryControllerTest {
         when(categoryService.getAllCategories()).thenReturn(categories);
 
         mvc.perform(get(BASE_URL)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.categories", hasSize(categories.size())));
     }
@@ -75,7 +76,8 @@ class CategoryControllerTest {
         when(categoryService.getCategoryByName(name)).thenReturn(categoryDTO);
 
         mvc.perform(get(BASE_URL + "/" + name)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(id)))
                 .andExpect(jsonPath("$.name", equalTo(name)));

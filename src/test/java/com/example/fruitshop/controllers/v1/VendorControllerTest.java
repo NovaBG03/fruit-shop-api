@@ -63,7 +63,8 @@ class VendorControllerTest {
         when(vendorService.getAllVendors()).thenReturn(Arrays.asList(vendor1, vendor2));
 
         mvc.perform(get(BASE_URL)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.vendors", hasSize(2)));
     }
@@ -77,7 +78,8 @@ class VendorControllerTest {
         when(vendorService.getVendor(id)).thenReturn(vendorDTO);
 
         mvc.perform(get(getVendorUrl(id))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(name)))
                 .andExpect(jsonPath("$.vendor_url", equalTo(getVendorUrl(id))));
@@ -96,7 +98,8 @@ class VendorControllerTest {
 
         mvc.perform(post(BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(vendorDTO)))
+                .content(asJsonString(vendorDTO))
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", equalTo(name)))
                 .andExpect(jsonPath("$.vendor_url", equalTo(getVendorUrl(id))));
@@ -115,7 +118,8 @@ class VendorControllerTest {
 
         mvc.perform(put(getVendorUrl(id))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(vendorDTO)))
+                .content(asJsonString(vendorDTO))
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(name)))
                 .andExpect(jsonPath("$.vendor_url", equalTo(getVendorUrl(id))));
@@ -134,7 +138,8 @@ class VendorControllerTest {
 
         mvc.perform(patch(getVendorUrl(id))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(vendorDTO)))
+                .content(asJsonString(vendorDTO))
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(name)))
                 .andExpect(jsonPath("$.vendor_url", equalTo(getVendorUrl(id))));
